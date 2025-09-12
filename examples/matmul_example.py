@@ -11,7 +11,7 @@ def bala(A, B):
     return C
 
 def main():
-    N = 2048  
+    N = 32  
     print(f"Starting Python matrix multiplication of size {N}x{N}...")
     A = np.ones((N, N), dtype=np.float32).tolist()
     B = np.ones((N, N), dtype=np.float32).tolist()
@@ -20,8 +20,8 @@ def main():
     C = bala(A, B)
     end = time.time()
 
-    print(f"Completed in {end - start:.3f} seconds.")
-    print("C[0][0] =", C[0][0])
+    print("Completed execution")
+    
 
 if __name__ == "__main__":
     main()

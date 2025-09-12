@@ -24,7 +24,7 @@ class ASTParser:
         }
         self.type_sizes = {'float': 4, 'double': 8, 'int': 4, 'char': 1, 'pointer': 8}
 
-   def parse_file(self, path: str, include_paths: Optional[List[str]] = None) -> Dict:
+    def parse_file(self, path: str, include_paths: Optional[List[str]] = None) -> Dict:
         if not os.path.exists(path):
             raise FileNotFoundError(path)
 
@@ -34,7 +34,7 @@ class ASTParser:
         else:
             return self._parse_c_cpp(path, include_paths)
 
-   def _parse_c_cpp(self, path: str, include_paths: Optional[List[str]]) -> Dict:
+    def _parse_c_cpp(self, path: str, include_paths: Optional[List[str]]) -> Dict:
         args = ['-std=c11']
         if include_paths:
             for p in include_paths:

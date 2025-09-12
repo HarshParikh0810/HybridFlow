@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#define N 1024
-#define K 1024
+#define N 2048
+#define K 2048
 
 void conv2d(float input[N][N], float kernel[K][K], float output[N-K+1][N-K+1]) {
     for (int i = 0; i < N - K + 1; i++) {

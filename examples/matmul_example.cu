@@ -43,11 +43,7 @@ int main() {
     matmul<<<blocksPerGrid, threadsPerBlock>>>(d_A, d_B, d_C, n);
 
     cudaMemcpy(h_C, d_C, size, cudaMemcpyDeviceToHost);
-
-    double checksum = 0.0;
-    for (int i = 0; i < n*n; i++) checksum += h_C[i];
-    printf("Checksum = %f\n", checksum);
-
+    printf("Matrix multiplication on GPU executed sucessfully.");
     cudaFree(d_A);
     cudaFree(d_B);
     cudaFree(d_C);

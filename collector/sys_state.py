@@ -1,6 +1,12 @@
 import psutil
 import torch
 import os
+try:
+    import pynvml
+    pynvml.nvmlInit()
+    NVML_AVAILABLE = True
+except:
+    NVML_AVAILABLE = False
 
 def get_system_state():
     """

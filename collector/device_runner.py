@@ -3,6 +3,7 @@ import tempfile
 import os
 import logging
 from analyzer.ast_parser import parse_and_detect
+import time
 
 log = logging.getLogger("device_runner")
 log.setLevel(logging.INFO)
@@ -11,8 +12,12 @@ log.setLevel(logging.INFO)
 def compile_and_run(cmd_compile, exe_path="./a.out"):
     try:
         subprocess.run(cmd_compile, check=True)
+        t0 = time.perf_counter()
         subprocess.run([exe_path], check=True)
-        return True
+        t1 = time.perf_counter()
+        exec_time_ms = (t1 - t0) * 1000
+        # print(f"Execution time: {exec_time_ms:.2f} ms")
+        return exec_time_ms
     except subprocess.CalledProcessError as e:
         log.error(f"Execution failed: {e}")
         return False
@@ -29,9 +34,14 @@ def run_on_device(source_file: str, device: str, extra_info: dict = None):
     if source_file.endswith(".py"):
         log.info(f"Python file detected. Predicted device={device}. Running with python3.")
         cmd = ["python3", source_file]
+        t0 = time.perf_counter()
         try:
             subprocess.run(cmd, check=True)
-            return True
+            t1 = time.perf_counter()
+            exec_time_ms = (t1 - t0) * 1000
+            print(f"Execution time: {exec_time_ms:.2f} ms")
+            return exec_time_ms
+            
         except subprocess.CalledProcessError as e:
             log.error(f"Python execution failed: {e}")
             return False
@@ -81,8 +91,27 @@ def run_on_device(source_file: str, device: str, extra_info: dict = None):
             os.unlink(wrapper_path)
         except Exception:
             pass
-        return ok
-
+        
+    return compile_and_run(cmd)
+    
+def run_on_other_device(source_file, decision, analysis, pred_time):
+    other_device = "gpu" if decision == "cpu" else "cpu"
+    print(f"\n--- Running {source_file} on {other_device.upper()} for comparison ---")
+    start = time.perf_counter()
+    success = run_on_device(source_file, other_device, extra_info=analysis)
+    end = time.perf_counter()
+    other_time = (end - start) * 1000 if success else None
+    if other_time:
+        print(f"{other_device.upper()} execution time: {other_time:.2f} ms")
+        if pred_time and other_time:
+            diff = other_time - pred_time
+            percent = (diff / other_time) * 100
+            faster = "faster" if percent > 0 else "slower"
+            print(f"\nDifference: {abs(diff):.2f} ms")
+            print(f"\nPredicted device was {abs(percent):.2f}% {faster} than the {other_device}.")
+    else:
+        print(f"{other_device.upper()} execution failed.")
+        
 def generate_generic_wrapper(fn_name, params):
     """
     Generate a generic wrapper main() for any function with known params.

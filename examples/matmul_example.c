@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define N 2048  
+#define N 32 
 
 void matmul(float A[N][N], float B[N][N], float C[N][N]) {
     for (int i = 0; i < N; i++) {
@@ -28,8 +28,7 @@ int main() {
 
     printf("Starting matrix multiplication of size %dx%d...\n", N, N);
     matmul(A, B, C);
-    printf("Matrix multiplication completed.\n");
+    printf("Matrix multiplication execution completed on CPU.\n");
 
-    printf("C[N-1][N-1] = %.2f\n", C[N-1][N-1]);
     return 0;
 }
