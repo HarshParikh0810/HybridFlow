@@ -1,0 +1,10 @@
+psutil
+pandas
+scikit-learn == 1.3.2
+joblib
+numpy
+pyyaml
+clang
+torch
+imbalanced-learn
+xgboost
