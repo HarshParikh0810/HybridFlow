@@ -129,22 +129,6 @@ CPU execution time: 445.67 ms
 - **Auto-Kernel Generation**
 - **Public Resources**
 
-## 🔧 Development Setup
-
-### **For Contributors**
-```bash
-# Development installation
-git clone https://github.com/HarshParikh0810/HybridFlow.git
-cd HybridFlow
-pip install -r requirements.txt -r Dataset/requirements.txt
-
-# Run test suite
-python -m pytest tests/
-python examples/test_all_kernels.py
-
-# Benchmark new operations
-python Dataset/sweeps/sweep_new_operation.py
-```
 
 ### **Supported Configurations**
 - **GPUs**: For RTX2050, Jetson Nano
